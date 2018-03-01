@@ -1,27 +1,30 @@
 module.exports = function solveEquation(equation) {
   // your implementation
-  var regexp =  /\-?\s?\d+/g;
-  var getValues = equation.match(regexp);
-  getValues.splice(1, 1);
+  var regexp = /\-?\s?\d+/g;
+  var coefficients = equation.match(regexp);
 
-  getValues.forEach(function(elemnt, index) {
-    getValues[index] = elemnt.replace(/\s+/g, '');
-    getValues[index] = Number(getValues[index]);
+  coefficients.splice(1, 1);
+
+  coefficients.forEach(function (currentElement, index) {
+    coefficients[index] = currentElement.replace(/\s+/g, ''); +
+    currentElement;
   });
+
+  var disc = discriminant(coefficients);
+
+  if (disc < 0) return {
+    Error: 'Discriminant less than zero'
+  }
+  if (disc === 0) return -(coefficients[1] / (2 * coefficients[0]));
 
   var result = [];
 
-  // console.log(getValues);
-  var discr = discriminant(getValues);
-  // console.log(discr);
-  // console.log(getValues[1], discr, getValues[0]);
+  result.push(Math.round((-(coefficients[1]) + disc) / (2 * coefficients[0])));
+  result.push(Math.round((-(coefficients[1]) - disc) / (2 * coefficients[0])));
 
-  result.push(Math.round((-(getValues[1]) + discr) / (2 * getValues[0])));
-  result.push(Math.round((-(getValues[1]) - discr) / (2 * getValues[0])));
-
-  result.sort((a, b) =>  a - b);
+  result.sort((a, b) => a - b);
 
   return result;
 }
 
-var discriminant = (values = []) => Math.sqrt(values[1]**2 - 4 * values[0] * values[2]);
+var discriminant = (values = []) => Math.sqrt(values[1] ** 2 - 4 * values[0] * values[2]);
